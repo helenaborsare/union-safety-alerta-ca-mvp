@@ -1,0 +1,1 @@
+"""Union Safety - Controle de CA (MVP)."""

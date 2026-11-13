@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block titulo %}Importar planilha{% endblock %}
+{% block conteudo %}
+<h1>Importar planilha do Bling</h1>
+<p class="sub">Exporte os produtos do Bling em .csv e envie aqui.</p>
+
+<section class="cartao-form" aria-labelledby="t-produtos">
+  <h2 id="t-produtos">1. Planilha de produtos do Bling</h2>
+  <form method="post" action="{{ url_for('main.importar_produtos') }}" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="arquivo-produtos">Arquivo da planilha (.csv)</label>
+    <input id="arquivo-produtos" name="arquivo" type="file" accept=".csv" required>
+    <p class="ajuda">Colunas esperadas: Código e Descrição (o número do CA vem no nome do produto). Estoque é opcional.</p>
+    <div class="acoes">
+      <button class="btn btn-principal" type="submit">Importar</button>
+      <a class="btn" href="{{ url_for('main.painel') }}">Ver painel de CAs</a>
+      <a class="btn" href="{{ url_for('main.menu') }}">Voltar ao menu</a>
+    </div>
+  </form>
+</section>
+
+<section class="cartao-form" aria-labelledby="t-base">
+  <h2 id="t-base">2. Base de CAs do Ministério do Trabalho</h2>
+  <p class="ajuda">{% if ultima_carga %}Última carga: {{ ultima_carga }}.{% else %}Ainda não carregada.{% endif %}
+    Carregue de novo sempre que baixar uma versão mais recente do arquivo do CAEPI.</p>
+  <form method="post" action="{{ url_for('main.importar_base') }}" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="arquivo-base">Arquivo da base de CAs (.csv ou .txt)</label>
+    <input id="arquivo-base" name="arquivo" type="file" accept=".csv,.txt" required>
+    <div class="acoes"><button class="btn btn-azul" type="submit">Carregar base</button></div>
+  </form>
+</section>
+{% endblock %}

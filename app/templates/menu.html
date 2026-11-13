@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block titulo %}Menu inicial{% endblock %}
+{% block conteudo %}
+<h1>Menu inicial</h1>
+<p class="sub">Escolha o que deseja fazer.
+  {% if ultima_carga %}Última carga da base de CAs: {{ ultima_carga }}.{% else %}A base de CAs ainda não foi carregada.{% endif %}</p>
+<div class="menu">
+  <a class="opcao opcao-principal" href="{{ url_for('main.painel') }}">
+    <strong>Ver painel de CAs</strong><span>Consultar vencidos e a vencer</span>
+  </a>
+  <a class="opcao" href="{{ url_for('main.importar') }}">
+    <strong>Importar planilha do Bling</strong><span>Enviar o .csv de produtos e carregar a base de CAs</span>
+  </a>
+</div>
+{% endblock %}

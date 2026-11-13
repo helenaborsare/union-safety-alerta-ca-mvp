@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block titulo %}Entrar{% endblock %}
+{% block conteudo %}
+<div class="cartao-form login">
+  <h1>Entrar</h1>
+  <p class="sub">Acesso restrito às usuárias da Union Safety.</p>
+  {% if erro %}
+  <div class="msg msg-erro" role="alert">
+    <span class="msg-i" aria-hidden="true">✕</span><span>{{ erro }}</span>
+  </div>
+  {% endif %}
+  <form method="post" action="{{ url_for('main.login') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label for="email">E-mail</label>
+    <input id="email" name="email" type="email" value="{{ email }}" autocomplete="username" required>
+    <label for="senha">Senha</label>
+    <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+    <div class="acoes"><button class="btn btn-principal" type="submit">Entrar</button></div>
+  </form>
+</div>
+{% endblock %}

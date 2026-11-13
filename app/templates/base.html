@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Início{% endblock %} – Union Safety</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body>
+  <a class="pular" href="#conteudo">Ir para o conteúdo</a>
+  <header class="topo">
+    <div class="topo-in">
+      <div class="marca">
+        <span class="marca-sel" aria-hidden="true"></span>
+        <div><strong>Union Safety</strong><span>Controle de CA</span></div>
+      </div>
+      {% if session.get('id_usuario') %}
+      <div class="usuaria">
+        <span>{{ session.get('nome') }}</span>
+        <form method="post" action="{{ url_for('main.sair') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-claro" type="submit">Sair</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </header>
+  <main id="conteudo" class="conteudo">
+    {% with mensagens = get_flashed_messages(with_categories=true) %}
+      {% for categoria, texto in mensagens %}
+      <div class="msg msg-{{ categoria }}" role="{{ 'alert' if categoria == 'erro' else 'status' }}">
+        <span class="msg-i" aria-hidden="true">{{ '✕' if categoria == 'erro' else '✓' }}</span>
+        <span>{{ texto }}</span>
+      </div>
+      {% endfor %}
+    {% endwith %}
+    {% block conteudo %}{% endblock %}
+  </main>
+</body>
+</html>

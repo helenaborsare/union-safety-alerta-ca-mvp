@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block titulo %}Painel de CAs{% endblock %}
+{% block conteudo %}
+<h1>Painel de CAs</h1>
+<p class="sub">Última carga da base de CAs: {{ ultima_carga or 'nenhuma carga ainda' }} · Hoje: {{ hoje }}</p>
+
+{% if not ultima_carga %}
+<div class="msg msg-aviso" role="status"><span class="msg-i" aria-hidden="true">▲</span>
+  <span>A base de CAs ainda não foi carregada, então nenhum produto com CA pode ser classificado.
+  <a href="{{ url_for('main.importar') }}">Carregar a base</a>.</span></div>
+{% endif %}
+
+<section class="cartoes" aria-label="Resumo por situação">
+  {% for s in ordem_status %}
+  <div class="cartao st-{{ s }}">
+    <span class="cartao-n">{{ numero(contagem.get(s, 0)) }}</span>
+    <span class="cartao-t"><span aria-hidden="true">{{ SIMBOLOS[s] }}</span> {{ ROTULOS_CURTOS[s] }}</span>
+  </div>
+  {% endfor %}
+</section>
+
+<form class="filtros" method="get" action="{{ url_for('main.painel') }}">
+  <div><label for="q">Buscar por nome ou CA</label>
+    <input id="q" name="q" type="search" value="{{ q }}" placeholder="Ex.: botina ou 12345"></div>
+  <div><label for="situacao">Situação</label>
+    <select id="situacao" name="situacao">
+      <option value="todas" {{ 'selected' if filtro == 'todas' }}>Todas</option>
+      {% for s in ordem_status %}
+      <option value="{{ s }}" {{ 'selected' if filtro == s }}>{{ ROTULOS_CURTOS[s] }}</option>
+      {% endfor %}
+    </select></div>
+  <div><label for="ordem">Ordenar por</label>
+    <select id="ordem" name="ordem">
+      <option value="urgencia" {{ 'selected' if ordem == 'urgencia' }}>Urgência</option>
+      <option value="az" {{ 'selected' if ordem == 'az' }}>A a Z</option>
+    </select></div>
+  <button class="btn btn-azul" type="submit">Filtrar</button>
+</form>
+
+<div class="tabela-caixa">
+  {% if linhas %}
+  <table>
+    <caption class="sr">Produtos e situação dos CAs ({{ linhas|length }} de {{ total }})</caption>
+    <thead><tr>
+      <th scope="col">Produto</th><th scope="col">CA</th><th scope="col">Validade</th>
+      <th scope="col">Dias restantes</th><th scope="col">Situação</th>
+    </tr></thead>
+    <tbody>
+      {% for l in linhas %}
+      <tr>
+        <td data-label="Produto">{{ l.nome }}</td>
+        <td data-label="CA">{{ l.ca }}</td>
+        <td data-label="Validade">{{ l.validade }}</td>
+        <td data-label="Dias restantes">{{ l.dias_texto }}</td>
+        <td data-label="Situação">
+          <span class="s st-{{ l.r.status }}"><span class="s-i" aria-hidden="true">{{ l.r.simbolo }}</span>{{ l.r.rotulo }}</span>
+          {% if l.r.status == 'sem_ca' or l.r.detalhe.startswith('Situação') %}
+          <span class="det">{{ l.r.detalhe }}</span>{% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p class="vazio">Nenhum produto encontrado. Importe a planilha do Bling ou mude os filtros.</p>
+  {% endif %}
+</div>
+<p><a class="btn" href="{{ url_for('main.menu') }}">Voltar ao menu</a></p>
+{% endblock %}

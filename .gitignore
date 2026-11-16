@@ -8,3 +8,5 @@ dados/
 .env
 *.csv
 !demo/*.csv
+.coverage
+htmlcov/

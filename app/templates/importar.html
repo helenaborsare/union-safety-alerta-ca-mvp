@@ -10,7 +10,7 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label for="arquivo-produtos">Arquivo da planilha (.csv)</label>
     <input id="arquivo-produtos" name="arquivo" type="file" accept=".csv" required>
-    <p class="ajuda">Colunas esperadas: Código e Descrição (o número do CA vem no nome do produto). Estoque é opcional.</p>
+        <p class="ajuda">Procure o arquivo exportado do Bling, com nome parecido com produtos_2026-11-13-09-02-57.csv, geralmente na pasta Downloads. Colunas esperadas: Código e Descrição (o número do CA vem no nome do produto). Estoque é opcional.</p>
     <div class="acoes">
       <button class="btn btn-principal" type="submit">Importar</button>
       <a class="btn" href="{{ url_for('main.painel') }}">Ver painel de CAs</a>

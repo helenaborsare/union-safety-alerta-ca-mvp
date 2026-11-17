@@ -35,8 +35,8 @@ Python, Flask, SQLAlchemy, SQLite, Waitress.
 1. Instale o Python (python.org), marcando "Add python.exe to PATH".
 2. Na pasta do projeto, crie e ative o ambiente virtual:
 
-       python -m venv venv
-       .\venv\Scripts\Activate.ps1
+          python -m venv .venv
+       .\.venv\Scripts\Activate.ps1
 
    Se o PowerShell bloquear a ativação:
 
